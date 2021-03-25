@@ -1,19 +1,13 @@
-// const express = require("express");
-// const app = express();
-// const mongoose = require("mongoose");
-// const bodyParser = require("body-parser");
-// const cors = require("cors");
-// require("dotenv/config");
-
-// const postsRoute = require("./routes/posts");
-
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 
-const postsRoute = require("./routes/posts");
+// const postsRoute = require("./routes/posts");
+import postsRoute from "./routes/posts";
+import booksRoute from "./routes/books";
+import authRoute from "./routes/auth";
 
 const app: express.Application = express();
 
@@ -23,15 +17,20 @@ dotenv.config();
 app.use(cors());
 app.use(bodyParser.json());
 
-
 app.use("/posts", postsRoute);
+app.use("/books", booksRoute);
+app.use("/auth", authRoute);
+
+app.get("/", (req: express.Request, res: express.Response) => {
+  res.send("Hello Back-end");
+});
 
 app.use("/posts", () => {
   console.log(`This is a middleware running`);
 });
 
-app.get("/", (req: express.Request, res: express.Response) => {
-  res.send("Hello Back-end");
+app.use("/books", () => {
+  console.log(`This is a book middleware running`);
 });
 
 // Node.js의 native Promise 사용

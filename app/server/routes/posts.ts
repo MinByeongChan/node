@@ -1,11 +1,12 @@
 import express from "express";
+import Post from "../model/Post";
+
 const router = express.Router();
-const Post = require("../model/Post");
 
 //GET BACK ALL THE POSTS
 router.get("/", async (req: express.Request, res: express.Response) => {
   try {
-    const posts = await Post.find((err:any, data:any) => {
+    const posts = await Post.find((err: any, data: any) => {
       console.log(data);
     });
     res.json(posts);
@@ -40,26 +41,32 @@ router.get("/:postId", async (req: express.Request, res: express.Response) => {
 });
 
 //Delete post
-router.delete("/:postId", async (req: express.Request, res: express.Response) => {
-  try {
-    const removePost = await Post.remove({ _id: req.params.postId });
-    res.json(removePost);
-  } catch (err) {
-    res.json({ message: err });
+router.delete(
+  "/:postId",
+  async (req: express.Request, res: express.Response) => {
+    try {
+      const removePost = await Post.remove({ _id: req.params.postId });
+      res.json(removePost);
+    } catch (err) {
+      res.json({ message: err });
+    }
   }
-});
+);
 
 //Update a post
-router.patch("/:postId", async (req: express.Request, res: express.Response) => {
-  try {
-    const updatedPost = await Post.updateOne(
-      { _id: req.params.postId },
-      { $set: { title: req.body.title } }
-    );
-    res.json(updatedPost);
-  } catch (err) {
-    res.json({ message: err });
+router.patch(
+  "/:postId",
+  async (req: express.Request, res: express.Response) => {
+    try {
+      const updatedPost = await Post.updateOne(
+        { _id: req.params.postId },
+        { $set: { title: req.body.title } }
+      );
+      res.json(updatedPost);
+    } catch (err) {
+      res.json({ message: err });
+    }
   }
-});
+);
 
-module.exports = router;
+export default router;
